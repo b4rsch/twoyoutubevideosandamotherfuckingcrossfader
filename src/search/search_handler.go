@@ -33,8 +33,7 @@ func SearchHandler(term string) map[string]string {
 	// Make the API call to YouTube.
 	call := service.Search.List([]string{"id,snippet"}).
 		Q(*query).
-		MaxResults(*maxResults).
-		VideoEmbeddable("true")
+		MaxResults(*maxResults)
 	response, err := call.Do()
 	// Group video, channel, and playlist results in separate lists.
 	videos := make(map[string]string)
