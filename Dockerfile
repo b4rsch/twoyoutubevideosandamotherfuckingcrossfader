@@ -6,4 +6,6 @@ WORKDIR /app
 
 RUN go build .
 
+ENV APIKEY "AIzaSyB-3nxRIQgI8CAsL8u1MXh_HIFbKwa9xWg"
+
 CMD ["./tyvamcbe"]

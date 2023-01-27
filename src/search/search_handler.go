@@ -7,22 +7,18 @@ import (
 	"google.golang.org/api/youtube/v3"
 	"log"
 	"net/http"
+	"os"
 )
 
 var maxResults = flag.Int64("max-results", 25, "Max YouTube results")
-
-const developerKey = ""
 
 type Search struct {
 	Pattern string
 }
 
 func SearchHandler(term string) map[string]string {
-	query := flag.String("query", term, "Search term")
-	flag.Parse()
-
 	client := &http.Client{
-		Transport: &transport.APIKey{Key: developerKey},
+		Transport: &transport.APIKey{Key: os.Getenv("APIKEY")},
 	}
 
 	service, err := youtube.New(client)
@@ -32,10 +28,11 @@ func SearchHandler(term string) map[string]string {
 
 	// Make the API call to YouTube.
 	call := service.Search.List([]string{"id,snippet"}).
-		Q(*query).
+		Q(term).
 		MaxResults(*maxResults)
 	response, err := call.Do()
 	// Group video, channel, and playlist results in separate lists.
+	fmt.Println("RESPONSE", response)
 	videos := make(map[string]string)
 	if err != nil {
 		fmt.Println("error occurred", err)
